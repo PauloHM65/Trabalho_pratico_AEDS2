@@ -1,11 +1,11 @@
-public class bobble {
+public class Quick {
     static long comp = 0;
     static long mov = 0;
 
-    static void swap(int[] array, int i, int j) {
-        int tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
+    static void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
         mov += 3;
     }
 
@@ -17,15 +17,28 @@ public class bobble {
         System.out.println();
     }
 
-    static void bubbleSort(int[] array) {
-        int n = array.length;
-        for (int i = n - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                comp++;
-                if (array[j] > array[j + 1]) {
-                    swap(array, j, j + 1);
-                }
+    static void quicksort(int esq, int dir, int[] array) {
+        int i = esq, j = dir, pivo = array[(dir + esq) / 2];
+
+        while (i <= j) {
+            while (array[i] < pivo) {
+                comp++;i++;
+            }comp++;
+            while (array[j] > pivo) {
+                comp++;j--;
+            }comp++;
+
+            if (i <= j) {
+                swap(array, i, j);
+                i++;
+                j--;
             }
+        }
+        if (j > esq) {
+            quicksort(esq, j, array);
+        }
+        if (i < dir) {
+            quicksort(i, dir, array);
         }
     }
 
@@ -41,7 +54,7 @@ public class bobble {
         imprimirArray("Inicial:", array);
 
         long t0 = System.nanoTime();
-        bubbleSort(array);
+        quicksort(0, array.length - 1, array);
         long t1 = System.nanoTime();
 
         imprimirArray("ORDENADO:", array);
@@ -51,7 +64,6 @@ public class bobble {
         System.out.println("Movimentacoes: " + mov);
         System.out.println("Tempo (ns):    " + (t1 - t0));
 
-        // linha estruturada para o benchmark capturar
-        System.out.println("BUBBLE_RESULT comp=" + comp + " mov=" + mov + " tempo_ns=" + (t1 - t0));
+        System.out.println("QUICK_RESULT comp=" + comp + " mov=" + mov + " tempo_ns=" + (t1 - t0));
     }
 }
